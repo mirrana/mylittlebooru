@@ -43,6 +43,14 @@ dependencies {
     compile 'org.jooq:jooq-codegen:3.7.+'
 }
 
+sourceSets {
+    main {
+        java {
+            srcDirs += 'src/main/generated/java'
+        }
+    }
+}
+
 task explodedWar(type: Copy) {
     group = 'build'
     into new File(buildDir, 'exploded-war')
@@ -79,8 +87,14 @@ jooq {
             }
             target {
                 packageName = 'com.abopu.booru.db.derby'
-                directory = new File(project(':web').projectDir, 'src/main/java')
+                directory = new File(project(':web').projectDir, 'src/main/generated/java')
             }
         }
+    }
+}
+
+idea {
+    module {
+        generatedSourceDirs += file('src/main/generated/java')
     }
 }
