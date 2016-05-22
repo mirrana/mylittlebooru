@@ -27,6 +27,7 @@ dependencies {
     compile 'org.eclipse.jetty:jetty-server:9.2.+'
     compile 'org.eclipse.jetty:jetty-webapp:9.2.+'
     compile 'org.eclipse.jetty:jetty-servlet:9.2.+'
+    compile 'org.eclipse.jetty:jetty-plus:9.2.+'
 }
 
 def dataDir = new File(projectDir, 'dist/data')
