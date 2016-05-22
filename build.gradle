@@ -1,41 +1,79 @@
-apply plugin: 'java'
-apply plugin: 'war'
+apply plugin: 'application'
 
-sourceCompatibility = 1.8
+allprojects {
+    apply plugin: 'java'
 
-repositories {
-    jcenter()
-    mavenCentral()
+    sourceCompatibility = 1.8
+
+    repositories {
+        jcenter()
+        mavenCentral()
+    }
+    
+    dependencies {
+        // Logging
+        compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.+'
+        compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.+'
+        runtime group: 'org.codehaus.groovy', name: 'groovy-all', version: '2.4.+'
+
+        // Testing
+        testCompile group: 'junit', name: 'junit', version: '4.+'
+    }
 }
 
 dependencies {
-    // Servlet
-    compile group: 'javax.servlet', name: 'javax.servlet-api', version: '3.1.+'
-    compile group: 'org.glassfish.jersey.core', name: 'jersey-server', version: '2.22.+'
-    compile group: 'org.glassfish.jersey.containers', name: 'jersey-container-servlet', version: '2.22.+'
-    compile group: 'org.glassfish.jersey.ext', name: 'jersey-servlet-portability', version: '2.22.+'
-    compile group: 'org.glassfish.jersey.media', name: 'jersey-media-multipart', version: '2.22.+'
-    compile group: 'org.glassfish.jersey.media', name: 'jersey-media-json-jackson', version: '2.22.+'
-//    compile group: 'org.glassfish.jersey.bundles',  name: 'jaxrs-ri', version: '2.22.+'
+    // Jetty
+    compile 'org.eclipse.jetty:jetty-server:9.2.+'
+    compile 'org.eclipse.jetty:jetty-webapp:9.2.+'
+    compile 'org.eclipse.jetty:jetty-servlet:9.2.+'
+}
 
-    // Security
-    compile group: 'org.mindrot', name: 'jbcrypt', version: '0.3m'
+def dataDir = new File(projectDir, 'dist/data')
+def logDir = new File(projectDir, 'dist/logs')
+def confDir = new File(projectDir, 'src/main/conf')
+def warDir = new File(project(':web').buildDir, 'exploded-war')
 
-    // Logging
-    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.+'
-    compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.+'
-    runtime group: 'org.codehaus.groovy', name: 'groovy-all', version: '2.4.+'
+distributions {
+    main {
+        contents {
+            into('web') {
+                from { project(':web').explodedWar.outputs.files }
+                exclude '**/META-INF'
+            }
+            into('conf') {
+                from confDir
+            }
+        }
+    }
+}
 
-    // Testing
-    testCompile group: 'junit', name: 'junit', version: '4.+'
-    //compile group: 'com.sun.jersey', name: 'jersey-client', version: '1.+' // For executing test cases against server
+run {
+    dependsOn ':web:explodedWar'
+    mainClassName = "com.abopu.booru.MyLittleBooru"
     
-    // Database
-    runtime group: 'org.apache.derby', name: 'derby', version: '10.11.1.1'
+    environment 'com.abopu.booru.data.LOCATION', dataDir.absolutePath
+    environment 'com.abopu.booru.conf.LOCATION', confDir.absolutePath
+    environment 'com.abopu.booru.log.LOCATION', logDir.absolutePath
+    environment 'com.abopu.booru.war.LOCATION', warDir.absolutePath
 }
 
-javadoc {
-    source = sourceSets.main.allJava
-    destinationDir = file('./docs/javadoc')
-    options.addStringOption("tag", "created")
-}
+//installDist {
+//    def logs = file("$destinationDir/logs")
+//    def conf = file("$destinationDir/conf")
+//    def other = file('dist')
+//        
+//    doLast {
+//        logs.mkdir();
+//        conf.mkdir();
+//        copy {
+//            from outputs.files
+//            into other
+//        }
+//    }
+//}
+
+//javadoc {
+//    source = sourceSets.main.allJava
+//    destinationDir = file('./docs/javadoc')
+//    options.addStringOption("tag", "created")
+//}

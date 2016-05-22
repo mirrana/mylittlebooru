@@ -1,7 +1,11 @@
 bin/
 
 # Locally Hosted Webapp Data Folder (for dev purposes only) #
-data/
+dist
+
+# Temporary Files #
+tmp
+*~*
 
 ### Eclipse ###
 .settings/
