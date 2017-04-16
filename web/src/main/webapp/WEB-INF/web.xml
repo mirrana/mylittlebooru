@@ -3,6 +3,11 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
          id="WebApp_ID" version="3.0">
   <display-name>MyLittleBooru</display-name>
+
+  <context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>classpath:/com/abopu/booru/spring/applicationContext.xml</param-value>
+  </context-param>
   
   <!--Listeners-->
   <listener>
@@ -29,6 +34,13 @@
     <init-param>
       <param-name>jersey.config.server.provider.packages</param-name>
       <param-value>com.abopu.booru.servlets.jaxrs</param-value>
+    </init-param>
+    <init-param>
+      <param-name>jersey.config.server.provider.classnames</param-name>
+      <param-value>
+        org.glassfish.jersey.media.multipart.MultiPartFeature, 
+        com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider
+      </param-value>
     </init-param>
   </servlet>
 

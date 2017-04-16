@@ -6,13 +6,15 @@ buildscript {
     dependencies {
         classpath 'nu.studer:gradle-jooq-plugin:1.0.+'
         classpath 'org.apache.derby:derby:10.11.1.1'
+        classpath 'mysql:mysql-connector-java:5.1.38'
     }
+    
     configurations.classpath {
-        resolutionStrategy {                            // enforce a specific jOOQ version
+        resolutionStrategy { // enforce a specific jOOQ version
             forcedModules = [
-                    'org.jooq:jooq:3.7.+',
-                    'org.jooq:jooq-meta:3.7.+',
-                    'org.jooq:jooq-codegen:3.7.+'
+                    'org.jooq:jooq:3.8.+',
+                    'org.jooq:jooq-meta:3.8.+',
+                    'org.jooq:jooq-codegen:3.8.+'
             ]
         }
     }
@@ -22,13 +24,20 @@ apply plugin: 'war'
 apply plugin: 'nu.studer.jooq'
 
 dependencies {
+
+    def SPRING_VERSION = '4.2.6.RELEASE'
+    def SPRING_BOOT_VERSION = '1.3.5.RELEASE'
+    def JOOQ_VERSION = '3.8.+'
+    def JERSEY_VERSION = '2.22.+'
+    def SERVLET_VERSION = '3.1.+'
+    
     // Servlet
-    compile group: 'javax.servlet', name: 'javax.servlet-api', version: '3.1.+'
-    compile group: 'org.glassfish.jersey.core', name: 'jersey-server', version: '2.22.+'
-    compile group: 'org.glassfish.jersey.containers', name: 'jersey-container-servlet', version: '2.22.+'
-    compile group: 'org.glassfish.jersey.ext', name: 'jersey-servlet-portability', version: '2.22.+'
-    compile group: 'org.glassfish.jersey.media', name: 'jersey-media-multipart', version: '2.22.+'
-    compile group: 'org.glassfish.jersey.media', name: 'jersey-media-json-jackson', version: '2.22.+'
+    compile group: 'javax.servlet', name: 'javax.servlet-api', version: SERVLET_VERSION
+    compile group: 'org.glassfish.jersey.core', name: 'jersey-server', version: JERSEY_VERSION
+    compile group: 'org.glassfish.jersey.containers', name: 'jersey-container-servlet', version: JERSEY_VERSION
+    compile group: 'org.glassfish.jersey.ext', name: 'jersey-servlet-portability', version: JERSEY_VERSION
+    compile group: 'org.glassfish.jersey.media', name: 'jersey-media-multipart', version: JERSEY_VERSION
+    compile group: 'org.glassfish.jersey.media', name: 'jersey-media-json-jackson', version: JERSEY_VERSION
 
     // Servlet Filters
     compile 'org.tuckey:urlrewritefilter:4.0.+'
@@ -37,10 +46,33 @@ dependencies {
     compile group: 'org.mindrot', name: 'jbcrypt', version: '0.3m'
 
     // Database
+    compile group: 'org.apache.commons', name: 'commons-dbcp2', version: '2.1.+'
     runtime group: 'org.apache.derby', name: 'derby', version: '10.11.1.1'
-    compile 'org.jooq:jooq:3.7.+'
-    compile 'org.jooq:jooq-meta:3.7.+'
-    compile 'org.jooq:jooq-codegen:3.7.+'
+    runtime group: 'mysql', name: 'mysql-connector-java', version: '5.1.38'
+
+    compile group: 'org.jooq', name: 'jooq', version: JOOQ_VERSION
+    compile group: 'org.jooq', name: 'jooq-meta', version: JOOQ_VERSION
+    compile group: 'org.jooq', name: 'jooq-codegen', version: JOOQ_VERSION
+
+    // Apache Commons
+    compile group: 'commons-io', name: 'commons-io', version: '2.5'
+    compile group: 'commons-codec', name: 'commons-codec', version: '1.10'
+
+    // Spring
+    compile group: 'org.springframework', name: 'spring-aop', version: SPRING_VERSION
+    compile group: 'org.springframework', name: 'spring-beans', version: SPRING_VERSION
+    compile group: 'org.springframework', name: 'spring-core', version: SPRING_VERSION
+    compile group: 'org.springframework', name: 'spring-context', version: SPRING_VERSION
+    compile group: 'org.springframework', name: 'spring-context-support', version: SPRING_VERSION
+    compile group: 'org.springframework', name: 'spring-expression', version: SPRING_VERSION
+    compile group: 'org.springframework', name: 'spring-jdbc', version: SPRING_VERSION
+    compile group: 'org.springframework', name: 'spring-tx', version: SPRING_VERSION
+    
+    // Misc
+    compile group: 'org.hibernate', name: 'hibernate-validator', version: '5.2.4.Final'
+    compile group: 'org.yaml', name: 'snakeyaml', version: '1.17'
+
+
 }
 
 sourceSets {
@@ -91,10 +123,49 @@ jooq {
             }
         }
     }
+
+    mysql(sourceSets.main) {
+        jdbc {
+            driver = 'com.mysql.jdbc.Driver'
+            url = 'jdbc:mysql://centos2:3306/mylittlebooru'
+            user = 'mylittlebooru'
+            password = '3uwr8prA'
+            schema = 'mylittlebooru'
+//            properties {
+//                property {
+//                    key = 'useSSL'
+//                    value = 'false'
+//                }
+//            }
+        }
+        generator {
+            name = 'org.jooq.util.DefaultGenerator'
+            strategy {
+                name = 'org.jooq.util.DefaultGeneratorStrategy'
+            }
+            database {
+                name = 'org.jooq.util.mysql.MySQLDatabase'
+                inputSchema = 'mylittlebooru'
+            }
+            generate {
+                pojos = true
+                daos = true
+            }
+            target {
+                packageName = 'com.abopu.booru.db.mysql'
+                directory = new File(project(':web').projectDir, 'src/main/generated/java')
+            }
+        }
+    }
 }
 
 idea {
     module {
         generatedSourceDirs += file('src/main/generated/java')
     }
+}
+
+clean.doLast {
+    println 'Deleting folder: ' + file('src/main/generated').absolutePath
+    file('src/main/generated').deleteDir()
 }
