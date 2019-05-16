@@ -1,24 +1,11 @@
 apply plugin: 'application'
 
 allprojects {
-    apply plugin: 'java'
     apply plugin: 'idea'
-
-    sourceCompatibility = 1.8
 
     repositories {
         jcenter()
         mavenCentral()
-    }
-    
-    dependencies {
-        // Logging
-        compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.+'
-        compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.+'
-        runtime group: 'org.codehaus.groovy', name: 'groovy-all', version: '2.4.+'
-
-        // Testing
-        testCompile group: 'junit', name: 'junit', version: '4.+'
     }
 }
 
@@ -30,34 +17,34 @@ dependencies {
     compile 'org.eclipse.jetty:jetty-plus:9.2.+'
 }
 
-def dataDir = new File(projectDir, 'dist/data')
-def logDir = new File(projectDir, 'dist/logs')
-def confDir = new File(projectDir, 'src/main/conf')
-def warDir = new File(project(':web').buildDir, 'exploded-war')
+//def dataDir = new File(projectDir, 'dist/data')
+//def logDir = new File(projectDir, 'dist/logs')
+//def confDir = new File(projectDir, 'src/main/conf')
+//def warDir = new File(project(':web').buildDir, 'exploded-war')
 
-distributions {
-    main {
-        contents {
-            into('web') {
-                from { project(':web').explodedWar.outputs.files }
-                exclude '**/META-INF'
-            }
-            into('conf') {
-                from confDir
-            }
-        }
-    }
-}
-
-run {
-    dependsOn ':web:explodedWar'
-    mainClassName = "com.abopu.booru.MyLittleBooru"
-    
-    environment 'com.abopu.booru.data.LOCATION', dataDir.absolutePath
-    environment 'com.abopu.booru.conf.LOCATION', confDir.absolutePath
-    environment 'com.abopu.booru.log.LOCATION', logDir.absolutePath
-    environment 'com.abopu.booru.war.LOCATION', warDir.absolutePath
-}
+//distributions {
+//    main {
+//        contents {
+//            into('web') {
+//                from { project(':web').explodedWar.outputs.files }
+//                exclude '**/META-INF'
+//            }
+//            into('conf') {
+//                from confDir
+//            }
+//        }
+//    }
+//}
+//
+//run {
+//    dependsOn ':web:explodedWar'
+//    mainClassName = "com.abopu.booru.MyLittleBooru"
+//    
+//    environment 'com.abopu.booru.data.LOCATION', dataDir.absolutePath
+//    environment 'com.abopu.booru.conf.LOCATION', confDir.absolutePath
+//    environment 'com.abopu.booru.log.LOCATION', logDir.absolutePath
+//    environment 'com.abopu.booru.war.LOCATION', warDir.absolutePath
+//}
 
 //installDist {
 //    def logs = file("$destinationDir/logs")
