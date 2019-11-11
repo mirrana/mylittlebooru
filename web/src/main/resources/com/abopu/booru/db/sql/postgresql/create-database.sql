@@ -1,6 +1,7 @@
 -- Create database and user
 
 set role postgres;
+drop database if exists mylittlebooru;
 drop database if exists booru;
 drop role if exists booru;
 
@@ -13,6 +14,9 @@ grant all privileges on database booru to booru;
 
 set role booru;
 \c booru;
+
+create schema booru;
+set search_path = booru,public;
 
 create sequence tag_categories_id_seq start with 1;
 
