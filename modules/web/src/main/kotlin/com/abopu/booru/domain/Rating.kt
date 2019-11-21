@@ -24,25 +24,12 @@
 
 package com.abopu.booru.domain
 
-import java.util.*
-
 /**
  * Created: November 20, 2019.
  * @author Sarah Skanes
  */
-data class Image(
-        val id : Long,
+data class Rating(
+        val tag : Char,
         val name : String,
-        val size : Long,
-        val md5 : String,
-        val type : String,
-        val width : Int,
-        val height : Int,
-        val title : String?,
-        val description : String?,
-        val rating : Rating,
-        val score : Int,
-        val source: String?,
-        val added : Date
-) {
-}
+        val description : String?
+)
