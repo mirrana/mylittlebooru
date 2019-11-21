@@ -22,20 +22,14 @@
  * SOFTWARE.
  */
 
-package com.abopu.mylittlebooru
+package com.abopu.booru
 
-import org.springframework.stereotype.Controller
-import org.springframework.ui.Model
-import org.springframework.ui.set
-import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.boot.runApplication
 
-@Controller
-class HtmlController {
+@SpringBootApplication
+class Application
 
-    @GetMapping("/")
-    fun blog(model: Model): String {
-        model["title"] = "Blog"
-        return "blog"
-    }
-
+fun main(args: Array<String>) {
+    runApplication<Application>(*args)
 }

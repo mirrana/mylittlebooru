@@ -45,6 +45,7 @@ repositories {
 
 dependencies {
 //    implementation("org.springframework.boot:spring-boot-starter-jooq")
+    implementation(project(":data-manager"))
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-websocket")
