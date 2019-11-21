@@ -1,7 +1,0 @@
-rootProject.name = 'mylittlebooru'
-
-include ':web'
-include ':mobile'
-
-include ':DataManager'
-project(":DataManager").projectDir = new File(settingsDir, "lib/DataManager")

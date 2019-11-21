@@ -15,6 +15,8 @@ public final class Settings {
 	private String logDir;
 	private String dataDir;
 	private String confDir;
+	
+	
 
 	/***************************************************************************
 	 *

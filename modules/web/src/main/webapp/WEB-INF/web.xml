@@ -5,9 +5,9 @@
   <display-name>MyLittleBooru</display-name>
   
   <!--Listeners-->
-  <listener>
-    <listener-class>com.abopu.booru.servlets.listeners.InitializeListener</listener-class>
-  </listener>
+<!--  <listener>-->
+<!--    <listener-class>com.abopu.booru.servlets.listeners.InitializeListener</listener-class>-->
+<!--  </listener>-->
 
   <!--Filters-->
   <filter>
