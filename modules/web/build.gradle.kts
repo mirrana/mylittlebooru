@@ -24,13 +24,13 @@ plugins {
     id("io.spring.dependency-management") version "1.0.8.RELEASE"
 //    id("nu.studer.jooq") version "3.0.3"
     war
-    kotlin("jvm") version "1.3.60"
-    kotlin("plugin.spring") version "1.3.60"
+    kotlin("jvm") version "1.3.61"
+    kotlin("plugin.spring") version "1.3.61"
 }
 
 group = "com.abopu"
 version = "0.0.1-SNAPSHOT"
-java.sourceCompatibility = JavaVersion.VERSION_11
+java.sourceCompatibility = JavaVersion.VERSION_12
 
 val developmentOnly by configurations.creating
 configurations {
