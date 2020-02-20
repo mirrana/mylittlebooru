@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2019 Sarah Skanes
+ * Copyright (c) 2020 Sarah Skanes
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,13 +22,23 @@
  * SOFTWARE.
  */
 
-package com.abopu.booru.repository
+package com.abopu.booru.db
 
-import com.abopu.booru.domain.Image
-import org.springframework.stereotype.Repository
+import com.abopu.booru.util.Password
+import org.springframework.boot.context.properties.ConfigurationProperties
+import org.springframework.context.annotation.Configuration
+
 
 /**
- * Created: November 20, 2019.
+ * Created: February 19, 2020.
  * @author Sarah Skanes
  */
-interface ImageRepository : com.abopu.data.Repository<Image, Long>
+@Configuration
+@ConfigurationProperties("connection")
+class DataSourceConfig {
+    
+    lateinit var username: String
+    lateinit var password: Password
+
+}
+

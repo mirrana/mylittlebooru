@@ -24,9 +24,12 @@
 
 package com.abopu.booru.controllers
 
+import com.abopu.booru.db.ConnectionFactory
 import com.abopu.booru.repository.ImageRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
+import org.springframework.ui.Model
+import org.springframework.web.bind.annotation.GetMapping
 
 /**
  * Created: November 20, 2019.
@@ -37,4 +40,10 @@ class ImageController {
     
     @Autowired
     lateinit var repository : ImageRepository
+
+    @GetMapping("/")
+    fun blog(model: Model): String {
+        ConnectionFactory.getConnection()
+        return "images"
+    }
 }

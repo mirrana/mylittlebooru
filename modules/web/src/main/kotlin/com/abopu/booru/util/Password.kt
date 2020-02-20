@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2019 Sarah Skanes
+ * Copyright (c) 2020 Sarah Skanes
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,13 +22,18 @@
  * SOFTWARE.
  */
 
-package com.abopu.booru.repository
-
-import com.abopu.booru.domain.Image
-import org.springframework.stereotype.Repository
+package com.abopu.booru.util
 
 /**
- * Created: November 20, 2019.
+ * Created: February 19, 2020.
  * @author Sarah Skanes
  */
-interface ImageRepository : com.abopu.data.Repository<Image, Long>
+class Password(val pwd: CharArray) {
+    constructor(pwd: String): this(pwd.toCharArray())
+    
+    fun clear() {
+        for (i in pwd.indices) {
+            pwd[i] = '\u0000'
+        }
+    }
+}

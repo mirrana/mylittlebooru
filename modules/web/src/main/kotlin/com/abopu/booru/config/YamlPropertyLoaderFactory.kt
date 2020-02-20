@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2019 Sarah Skanes
+ * Copyright (c) 2020 Sarah Skanes
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,13 +22,18 @@
  * SOFTWARE.
  */
 
-package com.abopu.booru.repository
+package com.abopu.booru.config
 
-import com.abopu.booru.domain.Image
-import org.springframework.stereotype.Repository
+import org.springframework.boot.env.YamlPropertySourceLoader
+import org.springframework.core.io.support.DefaultPropertySourceFactory
+import org.springframework.core.io.support.EncodedResource
 
 /**
- * Created: November 20, 2019.
+ * Created: February 19, 2020.
  * @author Sarah Skanes
  */
-interface ImageRepository : com.abopu.data.Repository<Image, Long>
+class YamlPropertyLoaderFactory : DefaultPropertySourceFactory() {
+    override fun createPropertySource(name: String?, resource: EncodedResource): org.springframework.core.env.PropertySource<*> {
+        return YamlPropertySourceLoader().load(resource.resource.filename, resource.resource)[0]
+    }
+}

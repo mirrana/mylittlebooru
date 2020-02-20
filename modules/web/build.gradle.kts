@@ -22,6 +22,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     id("org.springframework.boot") version "2.2.1.RELEASE"
     id("io.spring.dependency-management") version "1.0.8.RELEASE"
+    
 //    id("nu.studer.jooq") version "3.0.3"
     war
     kotlin("jvm") version "1.3.61"

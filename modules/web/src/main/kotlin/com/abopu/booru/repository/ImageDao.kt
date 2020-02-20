@@ -27,11 +27,13 @@ package com.abopu.booru.repository
 import com.abopu.booru.domain.Image
 import com.abopu.data.Criteria
 import com.abopu.data.jdbc.dao.AbstractDAO
+import org.springframework.stereotype.Repository
 
 /**
  * Created: November 20, 2019.
  * @author Sarah Skanes
  */
+@Repository
 class ImageDao : AbstractDAO(), ImageRepository {
     
     override fun update(record: Image): Boolean {
